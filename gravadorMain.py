@@ -3,17 +3,18 @@ import pymysql
 from queue import Queue
 import threading
 import time
+from json import load
 
 #Buffer da fila de recebimento de mensagens
 buffer = Queue()
 
+
+#abre o arquivo json de configurações
+with open('sets.json') as j:
+    sets = load(j)
+
 #Dados do host de banco de dados
-config_db = {
-    'host':'45.148.96.11',
-    'user':'econs1214660_pythonGrava',
-    'password':'@Vitrola2410',
-    'database':'econs1214660_main_db'
-}
+config_db = sets[0]["databaseConfig"]
 
 #Função de conexão com o banco de dados
 def conecta_db():
@@ -142,10 +143,10 @@ try:
     conecta_db()
 
     #Objeto cliente
-    client = mqtt.Client(client_id= "Gravador")
+    client = mqtt.Client(client_id= sets[0]["brokerConfig"]["clientId"])
 
     #Autenticação de usuario e senha
-    client.username_pw_set("gravador", "gravadorsenha2410")
+    client.username_pw_set(username= sets[0]["brokerConfig"]["user"], password= sets[0]["brokerConfig"]["password"])
 
 
     client.on_connect = on_connect
@@ -153,7 +154,7 @@ try:
     client.on_disconnect = on_disconnect
 
     #Conexão com o broker
-    client.connect("177.223.45.160", 1883, 60)
+    client.connect(host= sets[0]["brokerConfig"]["broker"], port= sets[0]["brokerConfig"]["port"], keepalive= sets[0]["brokerConfig"]["keepAlive"])
 
     #Inicia o keep em uma thread paralela
     threading.Thread(target=keep_alive_db, daemon= True).start()
