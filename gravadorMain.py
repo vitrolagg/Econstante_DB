@@ -10,8 +10,14 @@ buffer = Queue()
 
 
 #abre o arquivo json de configurações
-with open('sets.json') as j:
-    sets = load(j)
+with open('sets.json') as jset:
+    sets = load(jset)
+
+#Abre o arquivo json de sets dinâmicos
+with open('dynamics.json') as jdy:
+    dynamicSet = load(jdy)
+
+tabela = str(dynamicSet[0]["tabela"])
 
 #Dados do host de banco de dados
 config_db = sets[0]["databaseConfig"]
@@ -88,8 +94,8 @@ def on_disconnect(client, userdata, rc):
 
 #Função de gravação no banco de dados
 def gravaBanco(pacote):
-    
-    sql = 'INSERT INTO leituras_10_2024 (id , leitura, da_ta, hora) VALUES (%s, %s, %s, %s)'
+
+    sql = f'INSERT INTO {tabela} (id , leitura, da_ta, hora) VALUES (%s, %s, %s, %s)'
 
     for dados in pacote:
 
