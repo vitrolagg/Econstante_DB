@@ -16,6 +16,9 @@ tabela = str(jdy[0]["tabela"])
 #Dados do host de banco de dados
 config_db = sets[0]["databaseConfig"]
 
+conn = None
+cursor = None
+
 #Função de conexão com o banco de dados
 def conecta_db():
     
