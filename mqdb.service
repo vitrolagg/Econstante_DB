@@ -1,0 +1,15 @@
+[Unit]
+Description=Recebe dados via mqtt e grava no banco de dados
+After=network.target mosquitto.service
+
+[Service]
+ExecStart=/home/vitrolagg/gravador/venv/bin/python3 /home/vitrolagg/gravador/main.py
+WorkingDirectory=/home/vitrolagg/gravador
+StandardOutput=journal
+StandardError=journal
+Restart=always
+User=vitrolagg
+Group=vitrolagg
+
+[Install]
+WantedBy=multi-user.target
