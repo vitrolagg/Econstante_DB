@@ -2,22 +2,33 @@
 import pymysql
 from json import load
 from time import sleep
+from .jsons.monitor import obs_init
+
+conn = None
+cursor = None
+tabela = None
+# jdy = None
+
+
 
 #abre o arquivo json de configurações
-with open('sets.json') as jset:
+with open('jsons/sets.json') as jset:
     sets = load(jset)
 
-#Abre o arquivo json de sets dinâmicos
-with open('dynamics.json') as jdy:
-    jdy = load(jdy)
+def carregaJson(dados):
+    global tabela
+    global jdy
 
-tabela = str(jdy[0]["tabela"])
+    jdy = dados.get([0]["tabela"])
+
+    tabela = str(jdy)
+    print(tabela)
+
+obs_init(carregaJson)
 
 #Dados do host de banco de dados
 config_db = sets[0]["databaseConfig"]
 
-conn = None
-cursor = None
 
 #Função de conexão com o banco de dados
 def conecta_db():
