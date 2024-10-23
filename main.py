@@ -1,19 +1,17 @@
 #Arquivo principal
 from threading import Thread
 from time import sleep
-from database import desconecta_db, conecta_db, keep_alive_db, carregaJson
-from mqtt import conecta_mqtt, client
-from buffer import process_buffer
-from jsons.monitor import obs_init
+from modules.database import desconecta_db, conecta_db, keep_alive_db
+from modules.mqtt import conecta_mqtt, client
+from modules.buffer import process_buffer
+# from jsons.monitor import obs_init
 
 try:
     
     sleep(1)
 
-    carregaJson()
-
-    conecta_db()
-    conecta_mqtt()
+    # conecta_db()
+    # conecta_mqtt()
 
     #Inicia o keep em uma thread paralela
     Thread(target=keep_alive_db, daemon= True).start()
@@ -21,9 +19,9 @@ try:
     #Inicia o processamento do buffer em uma thread paralela
     Thread(target=process_buffer, daemon= True).start()
 
-    Thread(target=obs_init, args= carregaJson, daemon= True).start()
+    # Thread(target=obs_init, args= carregaJson, daemon= True).start()
 
-    #Ínicio da conexão em uma thred separada
+    #Loop do cliente MQTT
     client.loop_forever()
 
 except KeyboardInterrupt:

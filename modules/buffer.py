@@ -1,6 +1,6 @@
 #Aqruivo de processamento do buffer
 from queue import Queue
-from database import gravaBanco, desconecta_db, conecta_db
+from modules.database import gravaBanco, desconecta_db, conecta_db
 from time import sleep
 from pymysql import MySQLError
 

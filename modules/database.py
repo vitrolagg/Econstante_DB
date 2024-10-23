@@ -1,41 +1,36 @@
 #Arquivo de conexão e interação com o banco de dados
+from . import sets, tabela
 import pymysql
-from json import load
+# from json import load
 from time import sleep
-from .jsons.monitor import obs_init
+# from ..jsons.monitor import obs_init
 
-conn = None
-cursor = None
-tabela = None
+# tabela = None
 # jdy = None
 
+# def carregaJson(dados):
+#     global tabela
+#     global dynamics
 
+#     dynamics = dados.get([0]["tabela"])
 
-#abre o arquivo json de configurações
-with open('jsons/sets.json') as jset:
-    sets = load(jset)
+#     tabela = str(dynamics)
+#     print(tabela)
 
-def carregaJson(dados):
-    global tabela
-    global jdy
-
-    jdy = dados.get([0]["tabela"])
-
-    tabela = str(jdy)
-    print(tabela)
-
-obs_init(carregaJson)
+# obs_init(carregaJson)
 
 #Dados do host de banco de dados
 config_db = sets[0]["databaseConfig"]
 
 
+
+
 #Função de conexão com o banco de dados
 def conecta_db():
+    global conn 
+    global cursor 
     
     try:
-        global conn 
-        global cursor 
 
         conn = pymysql.connect(**config_db)
         cursor = conn.cursor()
@@ -79,3 +74,5 @@ def keep_alive_db():
             sleep(5)
             conecta_db()
         sleep(60)
+
+conecta_db()

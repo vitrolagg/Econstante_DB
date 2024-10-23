@@ -2,7 +2,7 @@ from time import sleep
 from json import load
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-from database import carregaJson
+from modules.database import carregaJson
 
 class MonitorJSON(FileSystemEventHandler):
 

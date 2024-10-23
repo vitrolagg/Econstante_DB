@@ -1,7 +1,8 @@
 #Arquivo de conexão e interação com o broker mqtt
+from . import topicoMQTT, sets
 import paho.mqtt.client as mqtt
-from database import desconecta_db, jdy, sets
-from buffer import buffer
+from modules.database import desconecta_db
+from modules.buffer import buffer
 from time import sleep
 
 client = mqtt.Client(client_id= sets[0]["brokerConfig"]["clientId"])
@@ -11,7 +12,7 @@ def on_connect(client, userdata, flags, rc):
     if rc == 0:
 
         print("Conectado ao broker com sucesso")
-        client.subscribe(jdy[0]["topic"])
+        client.subscribe(topicoMQTT)
 
     else:
         print(f"Falha ao se conectar com o broker. Código de retorno: {rc}")
@@ -36,8 +37,6 @@ def on_message(client , userata, msg):
             )
         )
     
-
-
 #Função de callback para desconexão com o broker
 def on_disconnect(client, userdata, rc):
 
@@ -71,3 +70,5 @@ def conecta_mqtt():
 
     except KeyboardInterrupt:
         desconecta_db()
+
+conecta_mqtt()
