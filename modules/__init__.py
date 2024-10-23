@@ -1,8 +1,5 @@
 import os
 from json import load
-# from .database import conecta_db
-# from mqtt import conecta_mqtt
-
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -20,7 +17,3 @@ with open(dynamics_path, 'r') as jdy:
 #Faz o primeiro recarregamento dos valores dinâmicos de tabela (DB) e topico(MQTT)
 tabela = dynamics[0]["tabela"]
 topicoMQTT = dynamics[0]["topic"]
-
-#Inicialização da conexão com o banco de dados
-# conecta_db()
-# conecta_mqtt()

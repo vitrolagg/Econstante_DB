@@ -10,9 +10,6 @@ try:
     
     sleep(1)
 
-    # conecta_db()
-    # conecta_mqtt()
-
     #Inicia o keep em uma thread paralela
     Thread(target=keep_alive_db, daemon= True).start()
 
