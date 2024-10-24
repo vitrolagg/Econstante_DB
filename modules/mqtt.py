@@ -1,5 +1,6 @@
 #Arquivo de conexão e interação com o broker mqtt
-from . import topicoMQTT, sets
+from . import sets
+from jsons import topicoMQTT
 import paho.mqtt.client as mqtt
 from modules.database import desconecta_db
 from modules.buffer import buffer

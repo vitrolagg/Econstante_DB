@@ -1,29 +1,11 @@
 #Arquivo de conexão e interação com o banco de dados
-from . import sets, tabela
+from . import sets
+import jsons
 import pymysql
-# from json import load
 from time import sleep
-# from ..jsons.monitor import obs_init
-
-# tabela = None
-# jdy = None
-
-# def carregaJson(dados):
-#     global tabela
-#     global dynamics
-
-#     dynamics = dados.get([0]["tabela"])
-
-#     tabela = str(dynamics)
-#     print(tabela)
-
-# obs_init(carregaJson)
 
 #Dados do host de banco de dados
 config_db = sets[0]["databaseConfig"]
-
-
-
 
 #Função de conexão com o banco de dados
 def conecta_db():
@@ -53,7 +35,9 @@ def desconecta_db():
 #Função de gravação no banco de dados
 def gravaBanco(pacote):
 
-    sql = f'INSERT INTO {tabela} (id , leitura, da_ta, hora) VALUES (%s, %s, %s, %s)'
+    sql = f'INSERT INTO {jsons.tabela} (id , leitura, da_ta, hora) VALUES (%s, %s, %s, %s)'
+
+    print(jsons.tabela)
 
     for dados in pacote:
 

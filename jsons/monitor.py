@@ -1,36 +1,54 @@
-from time import sleep
-from json import load
+#Módulo do monitor do arquivo dynamics.json
+from time import sleep, time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-from modules.database import carregaJson
+from . import recarregaJson
 
-class MonitorJSON(FileSystemEventHandler):
+#Classe de atuação do watchdog
+class WatchdogHandler(FileSystemEventHandler):
+    def __init__(self, watchPath) -> None:
+        self.watchPath = watchPath
 
-    def __init__(self, callback):
-        super().__init__()
-        self.callback = callback
+        #Reset do tempo do evento passado
+        self.last_modified = 0
 
-    def on_modified(self, event):
-        if event.src_path == "./dynamics.json":
-            with open('dynamics.json', 'r') as file:
-                self.recarregaJson()
+    #Função de callback de modificação do arquivo json
+    def on_modified(self, event) -> None:
+
+        if not event.is_directory and event.src_path == self.watchPath:
+
+            #Salva o tempo atual em segundos
+            tempo_atual = time()
+
+            #Executa o recarregamento apenas se o tempo entre eventos for menor que um segundo
+            if tempo_atual - self.last_modified > 1:
+
+                print(f"Modificado com sucesso")
+                recarregaJson()
+                self.last_modified = tempo_atual
+
+#Classe do observador do watchdog
+class Watchdog:
+    def __init__(self, handler) -> None:
+        self.handler = handler
+        self.watchPath = handler.watchPath
+        self.observer = Observer()
     
-    def recarregaJson(self):
-        with open('dynamics.json', 'r') as file:
-            dados = load(file)
-            self.callback(dados)
+    #Inicialização
+    def start(self) -> None:
+        self.observer.schedule(self.handler, path = self.handler.watchPath, recursive= False)
 
-def obs_init(callback):
+        try:
+            self.observer.start()
 
-    caminho = "."
-    observer = Observer()
-    handler = MonitorJSON(callback)
-    observer.schedule(handler, path= caminho, recursive= False)
-    observer.start()
+            while True:
+                sleep(1)
+        except KeyboardInterrupt:
+            self.stop()
+        except Exception as e:
+            print(f'Algo deu errado: {e}')
 
-    try:
-        while True:
-            sleep(1)
-    except Exception:
-        observer.stop()
-    observer.join()
+    #Parada
+    def stop(self) -> None:
+        self.observer.stop()
+        self.observer.join()
