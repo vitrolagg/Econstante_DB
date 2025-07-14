@@ -1,16 +1,16 @@
 [
     {
         "databaseConfig":{
-            "host":"45.148.96.11",
-            "user":"econs1214660_pythonGrava",
-            "password":"@Vitrola2410",
-            "database":"econs1214660_main_db"
+            "host":"000.000.000.000",
+            "user":"user",
+            "password":"password",
+            "database":"database_name"
         },
         "brokerConfig":{
-            "clientId":"Gravador",
-            "user": "gravador",
-            "password":"gravadorsenha2410",
-            "broker":"177.223.45.160",
+            "clientId":"clientId",
+            "user": "user",
+            "password":"password",
+            "broker":"000.000.000.000",
             "port":1883,
             "keepAlive": 60
         }
